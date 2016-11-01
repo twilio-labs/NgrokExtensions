@@ -14,9 +14,15 @@ in your path. You can also get ngrok as a [Chocolatey package](https://chocolate
 
 ### Install this Extension
 
-#### Quick and Easy Way
+#### From Visual Studio
 
-1. Get it from the Visual Studio Gallery (link and details coming soon).
+Get it from the [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/56a642ed-a5e0-4044-8735-740d36912c5e).
+From within Visual Studio:
+
+1. Select Tools... Extensions and Updates...
+2. Click "Online" and select the "Visual Studio Gallery" along the left-hand side of the window.
+3. Type "ngrok" into the search box in the upper right.
+4. Click the "Download" button on the extension in the search results.
 
 #### Build from Source
 
