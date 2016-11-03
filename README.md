@@ -12,6 +12,8 @@ Currently has only been tested in Visual Studio 2015.
 First thing, you need to [download ngrok](https://ngrok.com/download) and install it somewhere
 in your path. You can also get ngrok as a [Chocolatey package](https://chocolatey.org/packages/ngrok.portable).
 
+You can find detailed [Windows installation instructions for ngrok here](https://www.twilio.com/docs/guides/how-use-ngrok-windows-and-visual-studio-test-webhooks).
+
 ### Install this Extension
 
 #### From Visual Studio
