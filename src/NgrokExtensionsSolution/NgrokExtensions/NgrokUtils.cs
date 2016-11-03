@@ -4,18 +4,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace NgrokExtensions
 {
     public class NgrokUtils
     {
+        private const string NgrokNotFoundMessage = "ngrok executable not found. Configure the path in the via the add-in options or add the location to your PATH.";
         private readonly Dictionary<string, WebAppConfig> _webApps;
         private readonly Func<string, Task> _showErrorFunc;
         private readonly HttpClient _ngrokApi;
@@ -32,20 +33,35 @@ namespace NgrokExtensions
 
         public async Task StartTunnelsAsync(string exepath)
         {
+            Exception uncaughtException = null;
+
             try
             {
                 await DoStartTunnelsAsync(exepath);
             }
-
-            // does not appear to be the right exception in situations when no
-            // path is specified in options and exeutable is also not found in PATH
-            catch (FileNotFoundException exc) 
+            catch (FileNotFoundException)
             {
-                await _showErrorFunc($"ngrok executable not found.  Configure the path in the via the add-in options or add the location to your PATH.");
+                await _showErrorFunc(NgrokNotFoundMessage);
+            }
+            catch (Win32Exception ex)
+            {
+                if (ex.ErrorCode.ToString("X") == "80004005")
+                {
+                    await _showErrorFunc(NgrokNotFoundMessage);
+                }
+                else
+                {
+                    uncaughtException = ex;
+                }
             }
             catch (Exception ex)
             {
-                await _showErrorFunc($"Ran into a problem trying to start the ngrok tunnel(s): {ex}");
+                uncaughtException = ex;
+            }
+
+            if (uncaughtException != null)
+            {
+                await _showErrorFunc($"Ran into a problem trying to start the ngrok tunnel(s): {uncaughtException}");
             }
         }
 
