@@ -5,10 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NgrokExtensions
 {
@@ -28,11 +30,18 @@ namespace NgrokExtensions
             _ngrokApi.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task StartTunnelsAsync()
+        public async Task StartTunnelsAsync(string exepath)
         {
             try
             {
-                await DoStartTunnelsAsync();
+                await DoStartTunnelsAsync(exepath);
+            }
+
+            // does not appear to be the right exception in situations when no
+            // path is specified in options and exeutable is also not found in PATH
+            catch (FileNotFoundException exc) 
+            {
+                await _showErrorFunc($"ngrok executable not found.  Configure the path in the via the add-in options or add the location to your PATH.");
             }
             catch (Exception ex)
             {
@@ -40,20 +49,20 @@ namespace NgrokExtensions
             }
         }
 
-        private async Task DoStartTunnelsAsync()
+        private async Task DoStartTunnelsAsync(string exepath)
         {
-            await StartNgrokAsync();
+            await StartNgrokAsync(exepath);
             foreach (var projectName in _webApps.Keys)
             {
                 await StartNgrokTunnelAsync(projectName, _webApps[projectName]);
             }
         }
 
-        private async Task StartNgrokAsync(bool retry = false)
+        private async Task StartNgrokAsync(string exepath, bool retry = false)
         {
             if (await CanGetTunnelList()) return;
 
-            StartNgrokProcess();
+            StartNgrokProcess(exepath);
             await Task.Delay(250);
 
             if (await CanGetTunnelList(retry:true)) return;
@@ -83,13 +92,21 @@ namespace NgrokExtensions
             }
         }
 
-        private static void StartNgrokProcess()
+        private static void StartNgrokProcess(string exepath)
         {
-            var pi = new ProcessStartInfo("ngrok.exe", "start --none")
+            var path = "ngrok.exe";
+
+            if (!string.IsNullOrWhiteSpace(exepath) && File.Exists(exepath)) {
+                path = exepath;
+            }
+
+            var pi = new ProcessStartInfo(path, "start --none")
             {
                 CreateNoWindow = false,
-                WindowStyle = ProcessWindowStyle.Normal
+                WindowStyle = ProcessWindowStyle.Normal,
+                
             };
+
             Process.Start(pi);
         }
 

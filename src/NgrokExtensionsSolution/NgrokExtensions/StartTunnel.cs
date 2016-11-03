@@ -97,10 +97,13 @@ namespace NgrokExtensions
                 ShowErrorMessage(message);
             });
 
+            OptionsPageGrid page = (OptionsPageGrid)_package.GetDialogPage(typeof(OptionsPageGrid));
+
             ThreadHelper.JoinableTaskFactory.Run(async delegate
             {
                 await TaskScheduler.Default;
-                await ngrok.StartTunnelsAsync();
+
+                await ngrok.StartTunnelsAsync(page.ExecutablePath);
             });
         }
 

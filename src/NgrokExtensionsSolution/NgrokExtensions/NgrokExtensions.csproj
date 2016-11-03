@@ -55,6 +55,9 @@
     <Compile Include="NgrokTunnelApiRequest.cs" />
     <Compile Include="NgrokTunnelsApiResponse.cs" />
     <Compile Include="NgrokUtils.cs" />
+    <Compile Include="OptionsPageGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartTunnel.cs" />
     <Compile Include="StartTunnelPackage.cs" />

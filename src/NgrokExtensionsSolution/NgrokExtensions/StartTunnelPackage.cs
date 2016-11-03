@@ -29,6 +29,7 @@ namespace NgrokExtensions
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(StartTunnelPackage.PackageGuidString)]
+    [ProvideOptionPage(typeof(OptionsPageGrid), "ngrok", "Options", 0, 0, true)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class StartTunnelPackage : Package
     {
@@ -36,6 +37,15 @@ namespace NgrokExtensions
         /// StartTunnelPackage GUID string.
         /// </summary>
         public const string PackageGuidString = "9f845cfc-84ef-4aac-9826-d46a83744fb4";
+
+        public string ExecutablePath
+        {
+            get
+            {
+                OptionsPageGrid page = (OptionsPageGrid)this.GetDialogPage(typeof(OptionsPageGrid));
+                return page.ExecutablePath;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StartTunnel"/> class.
