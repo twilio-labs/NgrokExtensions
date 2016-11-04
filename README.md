@@ -1,5 +1,7 @@
 # Ngrok Extensions for Visual Studio
 
+[![Build status](https://ci.appveyor.com/api/projects/status/mi2kn7oaluldhuyo/branch/master?svg=true)](https://ci.appveyor.com/project/dprothero/ngrokextensions/branch/master)
+
 This extension allows you to use [ngrok](https://ngrok.com) right from within Visual Studio.
 It will start a tunnel for each web application that is part of your solution.
 
