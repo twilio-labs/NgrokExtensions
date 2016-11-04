@@ -58,6 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="NgrokErrorApiResult.cs" />
+    <Compile Include="NgrokProcess.cs" />
     <Compile Include="NgrokTunnelApiRequest.cs" />
     <Compile Include="NgrokTunnelsApiResponse.cs" />
     <Compile Include="NgrokUtils.cs" />

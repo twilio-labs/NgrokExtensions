@@ -91,19 +91,18 @@ namespace NgrokExtensions
                 return;
             }
 
-            var ngrok = new NgrokUtils(webApps, async delegate (string message)
+            var page = (OptionsPageGrid)_package.GetDialogPage(typeof(OptionsPageGrid));
+            var ngrok = new NgrokUtils(webApps, page.ExecutablePath, async delegate (string message)
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 ShowErrorMessage(message);
             });
 
-            OptionsPageGrid page = (OptionsPageGrid)_package.GetDialogPage(typeof(OptionsPageGrid));
-
             ThreadHelper.JoinableTaskFactory.Run(async delegate
             {
                 await TaskScheduler.Default;
 
-                await ngrok.StartTunnelsAsync(page.ExecutablePath);
+                await ngrok.StartTunnelsAsync();
             });
         }
 

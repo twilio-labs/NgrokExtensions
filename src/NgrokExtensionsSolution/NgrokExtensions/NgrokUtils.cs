@@ -21,23 +21,28 @@ namespace NgrokExtensions
         private readonly Func<string, Task> _showErrorFunc;
         private readonly HttpClient _ngrokApi;
         private Tunnel[] _tunnels;
+        private readonly NgrokProcess _ngrokProcess;
 
-        public NgrokUtils(Dictionary<string, WebAppConfig> webApps, Func<string, Task> asyncShowErrorFunc)
+        public NgrokUtils(Dictionary<string, WebAppConfig> webApps, string exePath,
+            Func<string, Task> asyncShowErrorFunc, 
+            HttpClient client = null, NgrokProcess ngrokProcess = null)
         {
             _webApps = webApps;
+            _ngrokProcess = ngrokProcess ?? new NgrokProcess(exePath);
             _showErrorFunc = asyncShowErrorFunc;
-            _ngrokApi = new HttpClient {BaseAddress = new Uri("http://localhost:4040")};
+            _ngrokApi = client ?? new HttpClient();
+            _ngrokApi.BaseAddress = new Uri("http://localhost:4040");
             _ngrokApi.DefaultRequestHeaders.Accept.Clear();
             _ngrokApi.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task StartTunnelsAsync(string exepath)
+        public async Task StartTunnelsAsync()
         {
             Exception uncaughtException = null;
 
             try
             {
-                await DoStartTunnelsAsync(exepath);
+                await DoStartTunnelsAsync();
             }
             catch (FileNotFoundException)
             {
@@ -65,20 +70,20 @@ namespace NgrokExtensions
             }
         }
 
-        private async Task DoStartTunnelsAsync(string exepath)
+        private async Task DoStartTunnelsAsync()
         {
-            await StartNgrokAsync(exepath);
+            await StartNgrokAsync();
             foreach (var projectName in _webApps.Keys)
             {
                 await StartNgrokTunnelAsync(projectName, _webApps[projectName]);
             }
         }
 
-        private async Task StartNgrokAsync(string exepath, bool retry = false)
+        private async Task StartNgrokAsync(bool retry = false)
         {
             if (await CanGetTunnelList()) return;
 
-            StartNgrokProcess(exepath);
+            _ngrokProcess.StartNgrokProcess();
             await Task.Delay(250);
 
             if (await CanGetTunnelList(retry:true)) return;
@@ -106,24 +111,6 @@ namespace NgrokExtensions
                 var apiResponse = await response.Content.ReadAsAsync<NgrokTunnelsApiResponse>();
                 _tunnels = apiResponse.tunnels;
             }
-        }
-
-        private static void StartNgrokProcess(string exepath)
-        {
-            var path = "ngrok.exe";
-
-            if (!string.IsNullOrWhiteSpace(exepath) && File.Exists(exepath)) {
-                path = exepath;
-            }
-
-            var pi = new ProcessStartInfo(path, "start --none")
-            {
-                CreateNoWindow = false,
-                WindowStyle = ProcessWindowStyle.Normal,
-                
-            };
-
-            Process.Start(pi);
         }
 
         private async Task StartNgrokTunnelAsync(string projectName, WebAppConfig config)
