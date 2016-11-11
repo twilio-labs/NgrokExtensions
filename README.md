@@ -74,6 +74,13 @@ To contribute, fork this repo to your own GitHub account. Then, create a
 branch on your own fork and perform the work. Push it up to your fork and
 then submit a Pull Request to this repo. This is called [GitHub Flow](https://guides.github.com/introduction/flow/).
 
+## Change Log
+
+* v0.9.4 - Added support for Node.js projects.
+* v0.9.3 - Fix crash when decimal values in ngrok's JSON response.
+* v0.9.2 - Allow customizing location of ngrok.exe.
+* v0.9.1 - Initial Release
+
 * * *
 
 Licensed under the MIT license. See the LICENSE file in the project root for more information.
