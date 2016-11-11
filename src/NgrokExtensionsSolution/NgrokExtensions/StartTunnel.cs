@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -24,7 +25,8 @@ namespace NgrokExtensions
             "WebApplication.IISUrl",
             "WebApplication.CurrentDebugUrl",
             "WebApplication.NonSecureUrl",
-            "WebApplication.BrowseURL"
+            "WebApplication.BrowseURL",
+            "NodejsPort" // Node.js project
         };
 
         private static readonly Regex NumberPattern = new Regex(@"\d+");
@@ -129,6 +131,7 @@ namespace NgrokExtensions
 
                 foreach (Property prop in project.Properties)
                 {
+                    DebugWriteProp(prop);
                     if (!PortPropertyNames.Contains(prop.Name)) continue;
 
                     var match = NumberPattern.Match(prop.Value.ToString());
@@ -158,6 +161,18 @@ namespace NgrokExtensions
                 }
             }
             return webApps;
+        }
+
+        private static void DebugWriteProp(Property prop)
+        {
+            try
+            {
+                Debug.WriteLine($"{prop.Name} = {prop.Value}");
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         private Projects GetSolutionProjects()
