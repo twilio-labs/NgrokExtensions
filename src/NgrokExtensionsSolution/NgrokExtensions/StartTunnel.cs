@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NgrokExtensions
 {
@@ -26,12 +29,14 @@ namespace NgrokExtensions
             "WebApplication.CurrentDebugUrl",
             "WebApplication.NonSecureUrl",
             "WebApplication.BrowseURL",
-            "NodejsPort" // Node.js project
+            "NodejsPort", // Node.js project
+            "FileName"    // Azure functions if ends with '.funproj'
         };
 
         private static readonly Regex NumberPattern = new Regex(@"\d+");
 
         public const int CommandId = 0x0100;
+        private const string NgrokSubdomainSettingName = "ngrok.subdomain";
         public static readonly Guid CommandSet = new Guid("30d1a36d-a03a-456d-b639-f28b9b23e161");
         private readonly Package _package;
 
@@ -134,26 +139,20 @@ namespace NgrokExtensions
                     DebugWriteProp(prop);
                     if (!PortPropertyNames.Contains(prop.Name)) continue;
 
-                    var match = NumberPattern.Match(prop.Value.ToString());
-                    if (!match.Success) continue;
+                    var webApp = new WebAppConfig();
 
-                    var webApp = new WebAppConfig
+                    if (prop.Name == "FileName" && prop.Value.ToString().EndsWith(".funproj"))
                     {
-                        PortNumber = int.Parse(match.Value),
-                        SubDomain = ""
-                    };
-
-                    foreach (ProjectItem item in project.ProjectItems)
+                        // Azure Functions app - use port 7071
+                        webApp.PortNumber = 7071;
+                        LoadOptionsFromAppSettingsJson(project, webApp);
+                    }
+                    else
                     {
-                        if (item.Name.ToLower() != "web.config") continue;
-
-                        var path = item.FileNames[0];
-                        var webConfig = XDocument.Load(path);
-                        var appSettings = webConfig.Descendants("appSettings").FirstOrDefault();
-                        webApp.SubDomain = appSettings?.Descendants("add")
-                            .FirstOrDefault(x => x.Attribute("key")?.Value == "ngrok.subdomain")
-                            ?.Attribute("value")?.Value;
-                        break;
+                        var match = NumberPattern.Match(prop.Value.ToString());
+                        if (!match.Success) continue;
+                        webApp.PortNumber = int.Parse(match.Value);
+                        LoadOptionsFromWebConfig(project, webApp);
                     }
 
                     webApps.Add(project.Name, webApp);
@@ -161,6 +160,36 @@ namespace NgrokExtensions
                 }
             }
             return webApps;
+        }
+
+        private static void LoadOptionsFromWebConfig(Project project, WebAppConfig webApp)
+        {
+            foreach (ProjectItem item in project.ProjectItems)
+            {
+                if (item.Name.ToLower() != "web.config") continue;
+
+                var path = item.FileNames[0];
+                var webConfig = XDocument.Load(path);
+                var appSettings = webConfig.Descendants("appSettings").FirstOrDefault();
+                webApp.SubDomain = appSettings?.Descendants("add")
+                    .FirstOrDefault(x => x.Attribute("key")?.Value == NgrokSubdomainSettingName)
+                    ?.Attribute("value")?.Value;
+                break;
+            }
+        }
+
+        private static void LoadOptionsFromAppSettingsJson(Project project, WebAppConfig webApp)
+        {
+            foreach (ProjectItem item in project.ProjectItems)
+            {
+                if (item.Name.ToLower() != "appsettings.json") continue;
+
+                var json = File.ReadAllText(item.FileNames[0]);
+                var appSettings = JsonConvert.DeserializeAnonymousType(json,
+                    new {IsEncrypted = false, Values = new Dictionary<string, string>()});
+                webApp.SubDomain = appSettings.Values?[NgrokSubdomainSettingName];
+                break;
+            }
         }
 
         private static void DebugWriteProp(Property prop)
