@@ -16,7 +16,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace NgrokExtensions
 {
