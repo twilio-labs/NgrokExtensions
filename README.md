@@ -48,18 +48,33 @@ menu.
 If you have a paid ngrok account, you can make use of custom subdomains with
 this extension.
 
-Specify the subdomain you would like it to use in a `ngrok-subdomain` key
+Specify the subdomain you would like it to use in a `ngrok.subdomain` key
 in the `appSettings` section of your `web.config` file like so:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <appSettings>
-    <add key="ngrok-subdomain" value="my-cool-app"/>
+    <add key="ngrok.subdomain" value="my-cool-app"/>
     ... more appSettings keys omitted ...
   </appSettings>
   ... more config omitted ...
 </configuration>
+```
+
+#### Custom ngrok Subdomains with Azure Functions
+
+If you are using an Azure Functions project and want to test locally, you can set the
+`ngrok.subdomain` key in the `appsettings.json` file like so:
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "ngrok.subdomain": "my-cool-app",
+    ... more app settings omitted ...
+  }
+}
 ```
 
 ## Feedback and Contribution
@@ -76,6 +91,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.5 - Added support for Azure Function projects.
 * v0.9.4 - Added support for Node.js projects.
 * v0.9.3 - Fix crash when decimal values in ngrok's JSON response.
 * v0.9.2 - Allow customizing location of ngrok.exe.
