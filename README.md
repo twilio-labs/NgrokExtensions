@@ -5,7 +5,7 @@
 This extension allows you to use [ngrok](https://ngrok.com) right from within Visual Studio.
 It will start a tunnel for each web application that is part of your solution.
 
-Currently has only been tested in Visual Studio 2015.
+Currently has only been tested in Visual Studio 2015 and 2017.
 
 ## Installation
 
@@ -31,7 +31,7 @@ From within Visual Studio:
 #### Build from Source
 
 1. Clone this repo
-2. Open with Visual Studio 2015 and build a `Release` build
+2. Open with Visual Studio 2017 and build a `Release` build
 3. Find the .vsix file in the `bin\Release` folder
 4. Double-click the .vsix file to install
 
@@ -91,6 +91,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.6 - Added support for Visual Studio 2017.
 * v0.9.5 - Added support for Azure Function projects.
 * v0.9.4 - Added support for Node.js projects.
 * v0.9.3 - Fix crash when decimal values in ngrok's JSON response.
