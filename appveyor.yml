@@ -1,0 +1,14 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+before_build:
+- cmd: >-
+    cd .\src\NgrokExtensionsSolution
+
+    nuget restore
+build:
+  project: src/NgrokExtensionsSolution/NgrokExtensionsSolution.sln
+  verbosity: minimal
+artifacts:
+- path: src/NgrokExtensionsSolution/NgrokExtensions/bin/Release/NgrokExtensions.vsix
+  name: Release
