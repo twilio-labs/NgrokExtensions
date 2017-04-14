@@ -29,7 +29,8 @@ namespace NgrokExtensions
             "WebApplication.NonSecureUrl",
             "WebApplication.BrowseURL",
             "NodejsPort", // Node.js project
-            "FileName"    // Azure functions if ends with '.funproj'
+            "FileName",    // Azure functions if ends with '.funproj'
+            "ProjectUrl"
         };
 
         private static readonly Regex NumberPattern = new Regex(@"\d+");
@@ -151,7 +152,14 @@ namespace NgrokExtensions
                         var match = NumberPattern.Match(prop.Value.ToString());
                         if (!match.Success) continue;
                         webApp.PortNumber = int.Parse(match.Value);
-                        LoadOptionsFromWebConfig(project, webApp);
+                        if (IsAspNetCoreProject(prop.Name))
+                        {
+                            LoadOptionsFromAppSettingsJson(project, webApp);
+                        }
+                        else
+                        {
+                            LoadOptionsFromWebConfig(project, webApp);
+                        }
                     }
 
                     webApps.Add(project.Name, webApp);
@@ -159,6 +167,11 @@ namespace NgrokExtensions
                 }
             }
             return webApps;
+        }
+
+        private bool IsAspNetCoreProject(string propName)
+        {
+            return propName == "ProjectUrl";
         }
 
         private static void LoadOptionsFromWebConfig(Project project, WebAppConfig webApp)
