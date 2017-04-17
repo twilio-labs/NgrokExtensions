@@ -62,7 +62,7 @@ in the `appSettings` section of your `web.config` file like so:
 </configuration>
 ```
 
-#### Custom ngrok Subdomains with Azure Functions
+#### Custom ngrok Subdomains with ASP.NET Core or Azure Functions
 
 If you are using an Azure Functions project and want to test locally, you can set the
 `ngrok.subdomain` key in the `appsettings.json` file like so:
@@ -91,6 +91,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.7 - Support for ASP.NET Core projects. Thanks @ahanoff!
 * v0.9.6 - Added support for Visual Studio 2017.
 * v0.9.5 - Added support for Azure Function projects.
 * v0.9.4 - Added support for Node.js projects.
