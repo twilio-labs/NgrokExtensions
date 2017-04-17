@@ -64,7 +64,7 @@ in the `appSettings` section of your `web.config` file like so:
 
 #### Custom ngrok Subdomains with ASP.NET Core or Azure Functions
 
-If you are using an Azure Functions project and want to test locally, you can set the
+If you are using an ASP.NET Core or Azure Functions project and want to test locally, you can set the
 `ngrok.subdomain` key in the `appsettings.json` file like so:
 
 ```json
