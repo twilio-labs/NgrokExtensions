@@ -99,18 +99,47 @@ namespace NgrokExtensions
             }
 
             var page = (OptionsPageGrid)_package.GetDialogPage(typeof(OptionsPageGrid));
-            var ngrok = new NgrokUtils(webApps, page.ExecutablePath, async delegate (string message)
+            var ngrok = new NgrokUtils(webApps, page.ExecutablePath, ShowErrorMessageAsync);
+
+            var installPlease = false;
+            if (!ngrok.NgrokIsInstalled())
             {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                ShowErrorMessage(message);
-            });
+                if (AskUserYesNoQuestion(
+                    "Ngrok is not installed. Would you like me to download it from ngrok.com and install it for you?"))
+                {
+                    installPlease = true;
+                }
+                else
+                {
+                    return;
+                }
+            }
 
             ThreadHelper.JoinableTaskFactory.Run(async delegate
             {
                 await TaskScheduler.Default;
-
+                if (installPlease)
+                {
+                    try
+                    {
+                        var installer = new NgrokInstaller();
+                        page.ExecutablePath = await installer.InstallNgrok();
+                        ngrok = new NgrokUtils(webApps, page.ExecutablePath, ShowErrorMessageAsync);
+                    }
+                    catch (NgrokDownloadException ngrokDownloadException)
+                    {
+                        await ShowErrorMessageAsync(ngrokDownloadException.Message);
+                        return;
+                    }
+                }
                 await ngrok.StartTunnelsAsync();
             });
+        }
+
+        private async System.Threading.Tasks.Task ShowErrorMessageAsync(string message)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            ShowErrorMessage(message);
         }
 
         private void ShowErrorMessage(string message)
@@ -122,6 +151,19 @@ namespace NgrokExtensions
                 OLEMSGICON.OLEMSGICON_CRITICAL,
                 OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
+        private bool AskUserYesNoQuestion(string message)
+        {
+            var result = VsShellUtilities.ShowMessageBox(
+                this.ServiceProvider,
+                message,
+                "ngrok",
+                OLEMSGICON.OLEMSGICON_QUERY,
+                OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
+            return result == 6;  // Yes
         }
 
         private Dictionary<string, WebAppConfig> GetWebApps()

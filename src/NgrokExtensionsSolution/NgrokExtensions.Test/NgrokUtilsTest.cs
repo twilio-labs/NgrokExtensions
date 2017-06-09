@@ -140,5 +140,11 @@ namespace NgrokExtensions.Test
 
             await _utils.StartTunnelsAsync();
         }
+
+        [TestMethod]
+        public void TestNgrokIsInstalled()
+        {
+            Assert.AreEqual(_ngrokProcess.IsInstalled(), _utils.NgrokIsInstalled());
+        }
     }
 }
