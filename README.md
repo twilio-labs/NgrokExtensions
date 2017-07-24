@@ -91,6 +91,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.8 - Bug fixes. Automatically install ngrok.exe if not found.
 * v0.9.7 - Support for ASP.NET Core projects. Thanks @ahanoff!
 * v0.9.6 - Added support for Visual Studio 2017.
 * v0.9.5 - Added support for Azure Function projects.
