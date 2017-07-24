@@ -95,4 +95,4 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 Licensed under the MIT license. See the LICENSE file in the project root for more information.
 
-Copyright (c) 2016 David Prothero
+Copyright (c) 2017 David Prothero
