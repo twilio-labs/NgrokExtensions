@@ -9,16 +9,7 @@ Currently has only been tested in Visual Studio 2015 and 2017.
 
 ## Installation
 
-### Install ngrok
-
-First thing, you need to [download ngrok](https://ngrok.com/download) and install it somewhere
-in your path. You can also get ngrok as a [Chocolatey package](https://chocolatey.org/packages/ngrok.portable).
-
-You can find detailed [Windows installation instructions for ngrok here](https://www.twilio.com/docs/guides/how-use-ngrok-windows-and-visual-studio-test-webhooks).
-
-### Install this Extension
-
-#### From Visual Studio
+### From Visual Studio
 
 Get it from the [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/56a642ed-a5e0-4044-8735-740d36912c5e).
 From within Visual Studio:
@@ -28,7 +19,7 @@ From within Visual Studio:
 3. Type "ngrok" into the search box in the upper right.
 4. Click the "Download" button on the extension in the search results.
 
-#### Build from Source
+### Build from Source
 
 1. Clone this repo
 2. Open with Visual Studio 2017 and build a `Release` build
@@ -91,6 +82,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.8 - Bug fixes. Automatically install ngrok.exe if not found.
 * v0.9.7 - Support for ASP.NET Core projects. Thanks @ahanoff!
 * v0.9.6 - Added support for Visual Studio 2017.
 * v0.9.5 - Added support for Azure Function projects.
