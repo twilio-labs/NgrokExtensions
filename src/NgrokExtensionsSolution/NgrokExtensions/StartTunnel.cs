@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -183,11 +184,18 @@ namespace NgrokExtensions
 
                     var webApp = new WebAppConfig();
 
-                    if (prop.Name == "FileName" && prop.Value.ToString().EndsWith(".funproj"))
+                    if (prop.Name == "FileName")
                     {
-                        // Azure Functions app - use port 7071
-                        webApp.PortNumber = 7071;
-                        LoadOptionsFromAppSettingsJson(project, webApp);
+                        if (prop.Value.ToString().EndsWith(".funproj"))
+                        {
+                            // Azure Functions app - use port 7071
+                            webApp.PortNumber = 7071;
+                            LoadOptionsFromAppSettingsJson(project, webApp);
+                        }
+                        else
+                        {
+                            continue;  // FileName property not relevant otherwise
+                        }
                     }
                     else
                     {
@@ -258,9 +266,37 @@ namespace NgrokExtensions
             }
         }
 
-        private Projects GetSolutionProjects()
+        private IEnumerable<Project> GetSolutionProjects()
         {
-            return (ServiceProvider.GetService(typeof(SDTE)) as DTE)?.Solution?.Projects;
+            var solution = (ServiceProvider.GetService(typeof(SDTE)) as DTE)?.Solution;
+            return solution == null ? null : ProcessProjects(solution.Projects.Cast<Project>());
+        }
+
+        private static IEnumerable<Project> ProcessProjects(IEnumerable<Project> projects)
+        {
+            var newProjectsList = new List<Project>();
+            foreach (var p in projects)
+            {
+
+                if (p.Kind == ProjectKinds.vsProjectKindSolutionFolder)
+                {
+                    newProjectsList.AddRange(ProcessProjects(GetSolutionFolderProjects(p)));
+                }
+                else
+                {
+                    newProjectsList.Add(p);
+                }
+            }
+
+            return newProjectsList;
+        }
+
+        private static IEnumerable<Project> GetSolutionFolderProjects(Project project)
+        {
+            return project.ProjectItems.Cast<ProjectItem>()
+                .Select(item => item.SubProject)
+                .Where(subProject => subProject != null)
+                .ToList();
         }
     }
 }
