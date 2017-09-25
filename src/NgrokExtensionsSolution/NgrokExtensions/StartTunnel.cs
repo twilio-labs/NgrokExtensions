@@ -242,16 +242,44 @@ namespace NgrokExtensions
 
         private static void LoadOptionsFromAppSettingsJson(Project project, WebAppConfig webApp)
         {
+            // Read the settings from the project's appsettings.json first
             foreach (ProjectItem item in project.ProjectItems)
             {
                 if (item.Name.ToLower() != "appsettings.json") continue;
 
-                var json = File.ReadAllText(item.FileNames[0]);
-                var appSettings = JsonConvert.DeserializeAnonymousType(json,
-                    new {IsEncrypted = false, Values = new Dictionary<string, string>()});
-                webApp.SubDomain = appSettings.Values?[NgrokSubdomainSettingName];
-                break;
+                TryReadOptionsFromJsonFile(item.FileNames[0], webApp);
             }
+
+            // Ooverride any additional settings from the secrets.json file if it exists
+            var userSecretsId = project.Properties.OfType<Property>()
+                .FirstOrDefault(x => x.Name.Equals("UserSecretsId", StringComparison.OrdinalIgnoreCase))?.Value as String;
+
+            if (userSecretsId != null)
+            {
+                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var secretsFile = Path.Combine(appdata, "Microsoft", "UserSecrets", userSecretsId, "secrets.json");
+
+                TryReadOptionsFromJsonFile(secretsFile, webApp);
+            }
+        }
+
+        private static Boolean TryReadOptionsFromJsonFile(String path, WebAppConfig webApp)
+        {
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+
+            var json = File.ReadAllText(path);
+            var appSettings = JsonConvert.DeserializeAnonymousType(json,
+                new { IsEncrypted = false, Values = new Dictionary<string, string>() });
+            
+            if (appSettings.Values != null && appSettings.Values.TryGetValue(NgrokSubdomainSettingName, out var subdomain))
+            {
+                webApp.SubDomain = subdomain;
+            }
+
+            return true;
         }
 
         private static void DebugWriteProp(Property prop)
