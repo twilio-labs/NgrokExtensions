@@ -242,15 +242,37 @@ namespace NgrokExtensions
 
         private static void LoadOptionsFromAppSettingsJson(Project project, WebAppConfig webApp)
         {
+            // Read the settings from the project's appsettings.json first
             foreach (ProjectItem item in project.ProjectItems)
             {
                 if (item.Name.ToLower() != "appsettings.json") continue;
 
-                var json = File.ReadAllText(item.FileNames[0]);
-                var appSettings = JsonConvert.DeserializeAnonymousType(json,
-                    new {IsEncrypted = false, Values = new Dictionary<string, string>()});
-                webApp.SubDomain = appSettings.Values?[NgrokSubdomainSettingName];
-                break;
+                ReadOptionsFromJsonFile(item.FileNames[0], webApp);
+            }
+
+            // Override any additional settings from the secrets.json file if it exists
+            var userSecretsId = project.Properties.OfType<Property>()
+                .FirstOrDefault(x => x.Name.Equals("UserSecretsId", StringComparison.OrdinalIgnoreCase))?.Value as String;
+
+            if (string.IsNullOrEmpty(userSecretsId)) return;
+
+            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var secretsFile = Path.Combine(appdata, "Microsoft", "UserSecrets", userSecretsId, "secrets.json");
+
+            ReadOptionsFromJsonFile(secretsFile, webApp);
+        }
+
+        private static void ReadOptionsFromJsonFile(string path, WebAppConfig webApp)
+        {
+            if (!File.Exists(path)) return;
+
+            var json = File.ReadAllText(path);
+            var appSettings = JsonConvert.DeserializeAnonymousType(json,
+                new { IsEncrypted = false, Values = new Dictionary<string, string>() });
+            
+            if (appSettings.Values != null && appSettings.Values.TryGetValue(NgrokSubdomainSettingName, out var subdomain))
+            {
+                webApp.SubDomain = subdomain;
             }
         }
 

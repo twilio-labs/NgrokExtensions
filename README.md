@@ -68,6 +68,8 @@ If you are using an ASP.NET Core or Azure Functions project and want to test loc
 }
 ```
 
+You can also set this value in a `secrets.json` file as [described here](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?tabs=visual-studio).
+
 ## Feedback and Contribution
 
 This is a brand new extension and would benefit greatly from your feedback
@@ -82,6 +84,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.10 - Allow settings override in secrets.json. Thanks @ChristopherHaws!
 * v0.9.9 - Bug fixes. Find projects within Solution folders.
 * v0.9.8 - Bug fixes. Automatically install ngrok.exe if not found.
 * v0.9.7 - Support for ASP.NET Core projects. Thanks @ahanoff!
