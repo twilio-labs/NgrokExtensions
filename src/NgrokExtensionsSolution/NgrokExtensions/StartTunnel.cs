@@ -247,28 +247,24 @@ namespace NgrokExtensions
             {
                 if (item.Name.ToLower() != "appsettings.json") continue;
 
-                TryReadOptionsFromJsonFile(item.FileNames[0], webApp);
+                ReadOptionsFromJsonFile(item.FileNames[0], webApp);
             }
 
-            // Ooverride any additional settings from the secrets.json file if it exists
+            // Override any additional settings from the secrets.json file if it exists
             var userSecretsId = project.Properties.OfType<Property>()
                 .FirstOrDefault(x => x.Name.Equals("UserSecretsId", StringComparison.OrdinalIgnoreCase))?.Value as String;
 
-            if (userSecretsId != null)
-            {
-                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                var secretsFile = Path.Combine(appdata, "Microsoft", "UserSecrets", userSecretsId, "secrets.json");
+            if (string.IsNullOrEmpty(userSecretsId)) return;
 
-                TryReadOptionsFromJsonFile(secretsFile, webApp);
-            }
+            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var secretsFile = Path.Combine(appdata, "Microsoft", "UserSecrets", userSecretsId, "secrets.json");
+
+            ReadOptionsFromJsonFile(secretsFile, webApp);
         }
 
-        private static Boolean TryReadOptionsFromJsonFile(String path, WebAppConfig webApp)
+        private static void ReadOptionsFromJsonFile(string path, WebAppConfig webApp)
         {
-            if (!File.Exists(path))
-            {
-                return false;
-            }
+            if (!File.Exists(path)) return;
 
             var json = File.ReadAllText(path);
             var appSettings = JsonConvert.DeserializeAnonymousType(json,
@@ -278,8 +274,6 @@ namespace NgrokExtensions
             {
                 webApp.SubDomain = subdomain;
             }
-
-            return true;
         }
 
         private static void DebugWriteProp(Property prop)
