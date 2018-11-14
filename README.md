@@ -32,7 +32,7 @@ Currently, usage is super-simple. All you need to do is open a solution with
 one or more web projects and then choose "Start ngrok Tunnel" from the "Tools"
 menu.
 
-![Menu item](docs/img/menu-item.png)
+![Menu item](https://raw.githubusercontent.com/dprothero/NgrokExtensions/master/docs/img/menu-item.png)
 
 ### Custom ngrok Subdomains
 
