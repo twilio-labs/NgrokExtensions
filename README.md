@@ -84,6 +84,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.11 - Fix ngrok installer after ngrok download page changed.
 * v0.9.10 - Allow settings override in secrets.json. Thanks @ChristopherHaws!
 * v0.9.9 - Bug fixes. Find projects within Solution folders.
 * v0.9.8 - Bug fixes. Automatically install ngrok.exe if not found.
@@ -99,4 +100,4 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 Licensed under the MIT license. See the LICENSE file in the project root for more information.
 
-Copyright (c) 2017 David Prothero
+Copyright (c) 2018 David Prothero
