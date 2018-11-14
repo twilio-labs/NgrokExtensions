@@ -44,8 +44,8 @@ namespace NgrokExtensions
             var html = await response.Content.ReadAsStringAsync();
 
             var downloadLinkId = _is64Bit ? "dl-windows-amd64" : "dl-windows-386";
-            var pattern = @"id=""" + downloadLinkId + 
-                @"""(?:.|\s)*?<a[^>]+?href=""(http[s]?:\/\/[^""]*?)""";
+            var pattern = @"id=""" + downloadLinkId +
+                @"""(?:.|\s)*?[^>]+?href=""(http[s]?:\/\/[^""]*?)""";
 
             var match = Regex.Match(html, pattern);
 
