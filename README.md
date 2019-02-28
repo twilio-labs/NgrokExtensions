@@ -84,6 +84,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.12 - Add support for Visual Studio 2019.
 * v0.9.11 - Fix ngrok installer after ngrok download page changed.
 * v0.9.10 - Allow settings override in secrets.json. Thanks @ChristopherHaws!
 * v0.9.9 - Bug fixes. Find projects within Solution folders.
