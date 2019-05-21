@@ -5,7 +5,7 @@
 This extension allows you to use [ngrok](https://ngrok.com) right from within Visual Studio.
 It will start a tunnel for each web application that is part of your solution.
 
-Currently has only been tested in Visual Studio 2015 and 2017.
+Has been tested in Visual Studio 2015, 2017, and 2019.
 
 ## Installation
 
