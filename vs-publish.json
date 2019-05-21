@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": ["testing", "web"],
+  "identity": {
+    "internalName": "NgrokExtensions"
+  },
+  "overview": "README.md",
+  "priceCategory": "free",
+  "publisher": "DavidProthero",
+  "private": false,
+  "qna": true,
+  "repo": "https://github.com/dprothero/NgrokExtensions"
+}
