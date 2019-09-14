@@ -20,10 +20,12 @@ namespace NgrokExtensions.Test
         private Dictionary<string, WebAppConfig> _webApps;
         private NgrokTunnelApiRequest _expectedRequest;
         private NgrokTunnelsApiResponse _emptyTunnelsResponse;
+        private int _expectedProcessCount;
 
         [TestInitialize]
         public void Initialize()
         {
+            _expectedProcessCount = 0;
             _mockHttp = new MockHttpMessageHandler();
             _client = new HttpClient(_mockHttp);
 
@@ -31,9 +33,8 @@ namespace NgrokExtensions.Test
             {
                 {
                     "fakeApp",
-                    new WebAppConfig
+                    new WebAppConfig("1234")
                     {
-                        PortNumber = 1234,
                         SubDomain = "fake-app"
                     }
                 }
@@ -44,8 +45,7 @@ namespace NgrokExtensions.Test
                 .Returns(Task.FromResult(0))
                 .Verifiable("Error display not called.");
 
-            _ngrokProcess = new FakeNgrokProcess("");
-            _utils = new NgrokUtils(_webApps, "", _mockErrorDisplay.Object.ShowError, _client, _ngrokProcess);
+            InitializeUtils("ngrok version 2.3.34\r\n");
 
             _emptyTunnelsResponse = new NgrokTunnelsApiResponse
             {
@@ -63,10 +63,16 @@ namespace NgrokExtensions.Test
             };
         }
 
+        private void InitializeUtils(string stdout)
+        {
+            _ngrokProcess = new FakeNgrokProcess("", stdout);
+            _utils = new NgrokUtils(_webApps, "", _mockErrorDisplay.Object.ShowError, _client, _ngrokProcess);
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
-            Assert.AreEqual(0, _ngrokProcess.StartCount);
+            Assert.AreEqual(_expectedProcessCount, _ngrokProcess.StartCount);
             _mockHttp.VerifyNoOutstandingExpectation();
         }
 
@@ -98,8 +104,7 @@ namespace NgrokExtensions.Test
 
             await _utils.StartTunnelsAsync();
 
-            Assert.AreEqual(1, _ngrokProcess.StartCount);
-            _ngrokProcess.StartCount = 0;
+            _expectedProcessCount = 1;
         }
 
         [TestMethod]
@@ -144,7 +149,24 @@ namespace NgrokExtensions.Test
         [TestMethod]
         public void TestNgrokIsInstalled()
         {
-            Assert.AreEqual(_ngrokProcess.IsInstalled(), _utils.NgrokIsInstalled());
+            Assert.AreEqual(true, _utils.NgrokIsInstalled());
+            _expectedProcessCount = 1;
+        }
+
+        [TestMethod]
+        public void TestNgrokOldVersion()
+        {
+            InitializeUtils("ngrok version 2.3.32\r\n");
+            Assert.AreEqual(false, _utils.NgrokIsInstalled());
+            _expectedProcessCount = 1;
+        }
+
+        [TestMethod]
+        public void TestNgrokNewerVersion()
+        {
+            InitializeUtils("ngrok version 3.0.1\r\n");
+            Assert.AreEqual(true, _utils.NgrokIsInstalled());
+            _expectedProcessCount = 1;
         }
     }
 }

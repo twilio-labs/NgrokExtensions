@@ -4,8 +4,11 @@ namespace NgrokExtensions.Test
 {
     public class FakeNgrokProcess : NgrokProcess
     {
-        public FakeNgrokProcess(string exePath) : base(exePath)
+        private readonly string _stdout;
+
+        public FakeNgrokProcess(string exePath, string stdout) : base(exePath)
         {
+            _stdout = stdout;
         }
 
         public int StartCount { get; set; } = 0;
@@ -15,6 +18,16 @@ namespace NgrokExtensions.Test
         {
             StartCount++;
             LastProcessStartInfo = pi;
+        }
+
+        protected override string GetStandardOutput()
+        {
+            return _stdout;
+        }
+
+        protected override void WaitForExit()
+        {
+            // nothing to wait for in testing
         }
     }
 }
