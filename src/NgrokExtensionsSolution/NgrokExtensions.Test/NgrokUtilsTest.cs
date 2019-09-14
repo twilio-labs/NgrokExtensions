@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,11 +22,13 @@ namespace NgrokExtensions.Test
         private NgrokTunnelApiRequest _expectedRequest;
         private NgrokTunnelsApiResponse _emptyTunnelsResponse;
         private int _expectedProcessCount;
+        private string _tempFile;
 
         [TestInitialize]
         public void Initialize()
         {
             _expectedProcessCount = 0;
+            _tempFile = Path.GetTempFileName();
             _mockHttp = new MockHttpMessageHandler();
             _client = new HttpClient(_mockHttp);
 
@@ -65,13 +68,17 @@ namespace NgrokExtensions.Test
 
         private void InitializeUtils(string stdout)
         {
-            _ngrokProcess = new FakeNgrokProcess("", stdout);
-            _utils = new NgrokUtils(_webApps, "", _mockErrorDisplay.Object.ShowError, _client, _ngrokProcess);
+            _ngrokProcess = new FakeNgrokProcess(_tempFile, stdout);
+            _utils = new NgrokUtils(_webApps, _tempFile, _mockErrorDisplay.Object.ShowError, _client, _ngrokProcess);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
+            if(File.Exists(_tempFile))
+            {
+                File.Delete(_tempFile);
+            }
             Assert.AreEqual(_expectedProcessCount, _ngrokProcess.StartCount);
             _mockHttp.VerifyNoOutstandingExpectation();
         }
