@@ -71,6 +71,7 @@
     <Compile Include="NgrokUtilsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NgrokInstallerTest.cs" />
+    <Compile Include="WebAppConfigTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NgrokExtensions\NgrokExtensions.csproj">

@@ -1,6 +1,6 @@
 ﻿// This file is licensed to you under the MIT license.
 // See the LICENSE file in the project root for more information.
-// Copyright (c) 2016 David Prothero
+// Copyright (c) 2019 David Prothero
 
 namespace NgrokExtensions
 {

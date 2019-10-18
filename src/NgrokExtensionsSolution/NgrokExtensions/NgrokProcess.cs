@@ -2,26 +2,41 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace NgrokExtensions
 {
     public class NgrokProcess
     {
+        private static readonly Regex VersionPattern = new Regex(@"\d+\.\d+\.\d+");
         private readonly string _exePath;
+        private Process _osProcess;
 
         public NgrokProcess(string exePath)
         {
             _exePath = exePath;
         }
 
-        public void StartNgrokProcess()
+        public string GetNgrokVersion()
+        {
+            StartNgrokProcess("--version", false);
+            var version = GetStandardOutput();
+            WaitForExit();
+
+            var match = VersionPattern.Match(version);
+            return match.Success ? match.Value : null;
+        }
+
+        public void StartNgrokProcess(string args = "start --none", bool showWindow = true)
         {
             var path = GetNgrokPath();
 
-            var pi = new ProcessStartInfo(path, "start --none")
+            var pi = new ProcessStartInfo(path, args)
             {
-                CreateNoWindow = false,
-                WindowStyle = ProcessWindowStyle.Normal    
+                CreateNoWindow = !showWindow,
+                WindowStyle = showWindow ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden,
+                RedirectStandardOutput = !showWindow,
+                UseShellExecute = showWindow
             };
 
             Start(pi);
@@ -41,7 +56,17 @@ namespace NgrokExtensions
 
         protected virtual void Start(ProcessStartInfo pi)
         {
-            Process.Start(pi);
+            _osProcess = Process.Start(pi);
+        }
+
+        protected virtual string GetStandardOutput()
+        {
+            return _osProcess.StandardOutput.ReadToEnd();
+        }
+
+        protected virtual void WaitForExit()
+        {
+            _osProcess.WaitForExit();
         }
 
         public bool IsInstalled()

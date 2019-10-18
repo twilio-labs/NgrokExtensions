@@ -1,6 +1,6 @@
 ﻿// This file is licensed to you under the MIT license.
 // See the LICENSE file in the project root for more information.
-// Copyright (c) 2016 David Prothero
+// Copyright (c) 2019 David Prothero
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,6 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using EnvDTE;
@@ -33,8 +32,6 @@ namespace NgrokExtensions
             "FileName",    // Azure functions if ends with '.funproj'
             "ProjectUrl"
         };
-
-        private static readonly Regex NumberPattern = new Regex(@"\d+");
 
         public const int CommandId = 0x0100;
         private const string NgrokSubdomainSettingName = "ngrok.subdomain";
@@ -106,7 +103,7 @@ namespace NgrokExtensions
             if (!ngrok.NgrokIsInstalled())
             {
                 if (AskUserYesNoQuestion(
-                    "Ngrok is not installed. Would you like me to download it from ngrok.com and install it for you?"))
+                    "Ngrok 2.3.34 or above is not installed. Would you like me to download it from ngrok.com and install it for you?"))
                 {
                     installPlease = true;
                 }
@@ -182,14 +179,14 @@ namespace NgrokExtensions
                     DebugWriteProp(prop);
                     if (!PortPropertyNames.Contains(prop.Name)) continue;
 
-                    var webApp = new WebAppConfig();
+                    WebAppConfig webApp;
 
                     if (prop.Name == "FileName")
                     {
                         if (prop.Value.ToString().EndsWith(".funproj"))
                         {
                             // Azure Functions app - use port 7071
-                            webApp.PortNumber = 7071;
+                            webApp = new WebAppConfig("7071");
                             LoadOptionsFromAppSettingsJson(project, webApp);
                         }
                         else
@@ -199,9 +196,8 @@ namespace NgrokExtensions
                     }
                     else
                     {
-                        var match = NumberPattern.Match(prop.Value.ToString());
-                        if (!match.Success) continue;
-                        webApp.PortNumber = int.Parse(match.Value);
+                        webApp = new WebAppConfig(prop.Value.ToString());
+                        if (!webApp.IsValid) continue;
                         if (IsAspNetCoreProject(prop.Name))
                         {
                             LoadOptionsFromAppSettingsJson(project, webApp);

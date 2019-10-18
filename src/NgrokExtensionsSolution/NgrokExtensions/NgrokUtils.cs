@@ -1,6 +1,6 @@
 ﻿// This file is licensed to you under the MIT license.
 // See the LICENSE file in the project root for more information.
-// Copyright (c) 2016 David Prothero
+// Copyright (c) 2019 David Prothero
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -19,6 +18,7 @@ namespace NgrokExtensions
     public class NgrokUtils
     {
         public const string NgrokNotFoundMessage = "ngrok executable not found. Configure the path in the via the add-in options or add the location to your PATH.";
+        private static Version MinimumVersion = new Version("2.3.34");
         private readonly Dictionary<string, WebAppConfig> _webApps;
         private readonly Func<string, Task> _showErrorFunc;
         private readonly HttpClient _ngrokApi;
@@ -40,7 +40,13 @@ namespace NgrokExtensions
 
         public bool NgrokIsInstalled()
         {
-            return _ngrokProcess.IsInstalled();
+            if (!_ngrokProcess.IsInstalled()) return false;
+
+            var versionString = _ngrokProcess.GetNgrokVersion();
+            if (versionString == null) return false;
+
+            var version = new Version(versionString);
+            return version.CompareTo(MinimumVersion) >= 0;
         }
 
         public async Task StartTunnelsAsync()
@@ -124,7 +130,7 @@ namespace NgrokExtensions
 
         private async Task StartNgrokTunnelAsync(string projectName, WebAppConfig config)
         {
-            var addr = $"localhost:{config.PortNumber}";
+            var addr = config.NgrokAddress;
             if (!TunnelAlreadyExists(addr))
             {
                 await CreateTunnelAsync(projectName, config, addr);
@@ -136,6 +142,11 @@ namespace NgrokExtensions
             return _tunnels.Any(t => t.config.addr == addr);
         }
 
+        private string StripProtocol(string addr)
+        {
+            return addr.Replace("https://", "");
+        }
+
         private async Task CreateTunnelAsync(string projectName, WebAppConfig config, string addr, bool retry = false)
         {
             var request = new NgrokTunnelApiRequest
@@ -143,7 +154,7 @@ namespace NgrokExtensions
                 name = projectName,
                 addr = addr,
                 proto = "http",
-                host_header = addr
+                host_header = StripProtocol(addr)
             };
             if (!string.IsNullOrEmpty(config.SubDomain))
             {
