@@ -84,6 +84,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.13 - Add support for https.
 * v0.9.12 - Add support for Visual Studio 2019.
 * v0.9.11 - Fix ngrok installer after ngrok download page changed.
 * v0.9.10 - Allow settings override in secrets.json. Thanks @ChristopherHaws!
@@ -101,4 +102,4 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 Licensed under the MIT license. See the LICENSE file in the project root for more information.
 
-Copyright (c) 2018 David Prothero
+Copyright (c) 2019 David Prothero
