@@ -21,6 +21,7 @@ namespace NgrokExtensions
 
         public string NgrokAddress { get; }
         public string SubDomain { get; set; }
+        public string HostName { get; set; }
         public string PublicUrl { get; set; }
 
         public WebAppConfig(string settingValue)

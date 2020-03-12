@@ -160,6 +160,10 @@ namespace NgrokExtensions
             {
                 request.subdomain = config.SubDomain;
             }
+            if (!string.IsNullOrEmpty(config.HostName))
+            {
+                request.hostname = config.HostName;
+            }
 
             Debug.WriteLine($"request: '{JsonConvert.SerializeObject(request)}'");
             var response = await _ngrokApi.PostAsJsonAsync("/api/tunnels", request);

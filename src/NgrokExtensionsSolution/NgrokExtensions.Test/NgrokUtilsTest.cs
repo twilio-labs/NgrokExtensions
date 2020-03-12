@@ -38,7 +38,8 @@ namespace NgrokExtensions.Test
                     "fakeApp",
                     new WebAppConfig("1234")
                     {
-                        SubDomain = "fake-app"
+                        SubDomain = "fake-app",
+                        HostName = "dev.fake-app.com"
                     }
                 }
             };
@@ -62,7 +63,8 @@ namespace NgrokExtensions.Test
                 host_header = "localhost:1234",
                 name = "fakeApp",
                 proto = "http",
-                subdomain = "fake-app"
+                subdomain = "fake-app",
+                hostname = "dev.fake-app.com"
             };
         }
 
