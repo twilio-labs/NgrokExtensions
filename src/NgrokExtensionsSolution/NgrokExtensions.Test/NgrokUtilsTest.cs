@@ -39,7 +39,8 @@ namespace NgrokExtensions.Test
                     new WebAppConfig("1234")
                     {
                         SubDomain = "fake-app",
-                        HostName = "dev.fake-app.com"
+                        HostName = "dev.fake-app.com",
+                        Region = "us"
                     }
                 }
             };

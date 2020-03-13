@@ -36,6 +36,7 @@ namespace NgrokExtensions
         public const int CommandId = 0x0100;
         private const string NgrokSubdomainSettingName = "ngrok.subdomain";
         private const string NgrokHostnameSettingName = "ngrok.hostname";
+        private const string NgrokRegionSettingName = "ngrok.region";
         public static readonly Guid CommandSet = new Guid("30d1a36d-a03a-456d-b639-f28b9b23e161");
         private readonly Package _package;
 
@@ -236,6 +237,9 @@ namespace NgrokExtensions
                 webApp.HostName = appSettings?.Descendants("add")
                     .FirstOrDefault(x => x.Attribute("key")?.Value == NgrokHostnameSettingName)
                     ?.Attribute("value")?.Value;
+                webApp.Region = appSettings?.Descendants("add")
+                    .FirstOrDefault(x => x.Attribute("key")?.Value == NgrokRegionSettingName)
+                    ?.Attribute("value")?.Value;
                 break;
             }
         }
@@ -277,6 +281,10 @@ namespace NgrokExtensions
             if (appSettings.Values != null && appSettings.Values.TryGetValue(NgrokHostnameSettingName, out var hostname))
             {
                 webApp.HostName = hostname;
+            }
+            if (appSettings.Values != null && appSettings.Values.TryGetValue(NgrokRegionSettingName, out var region))
+            {
+                webApp.Region = region;
             }
         }
 

@@ -85,18 +85,21 @@ namespace NgrokExtensions
 
         private async Task DoStartTunnelsAsync()
         {
-            await StartNgrokAsync();
+            //get first region
+            string region = _webApps.Values.FirstOrDefault(c => !string.IsNullOrEmpty(c.Region))?.Region;
+
+            await StartNgrokAsync(region: region);
             foreach (var projectName in _webApps.Keys)
             {
                 await StartNgrokTunnelAsync(projectName, _webApps[projectName]);
             }
         }
 
-        private async Task StartNgrokAsync(bool retry = false)
+        private async Task StartNgrokAsync(bool retry = false, string region = "")
         {
             if (await CanGetTunnelList()) return;
 
-            _ngrokProcess.StartNgrokProcess();
+            _ngrokProcess.StartNgrokProcess(region: region);
             await Task.Delay(250);
 
             if (await CanGetTunnelList(retry:true)) return;
@@ -156,13 +159,13 @@ namespace NgrokExtensions
                 proto = "http",
                 host_header = StripProtocol(addr)
             };
-            if (!string.IsNullOrEmpty(config.SubDomain))
-            {
-                request.subdomain = config.SubDomain;
-            }
             if (!string.IsNullOrEmpty(config.HostName))
             {
                 request.hostname = config.HostName;
+            }
+            else if (!string.IsNullOrEmpty(config.SubDomain))
+            {
+                request.subdomain = config.SubDomain;
             }
 
             Debug.WriteLine($"request: '{JsonConvert.SerializeObject(request)}'");
