@@ -29,48 +29,48 @@ namespace NgrokExtensions.Test
         }
 
         [TestMethod]
-        public async Task TestGetNgrokDownloadUrl()
+        public async Task TestGetNgrokDownloadUrlAsync()
         {
             var installer = new NgrokInstaller(_mockHttpClient, true);
-            var url = await installer.GetNgrokDownloadUrl();
+            var url = await installer.GetNgrokDownloadUrlAsync();
             Assert.AreEqual("https://fakedomain.io/ngrok64.zip", url);
         }
 
         [TestMethod]
-        public async Task TestGetNgrokDownloadUrl32Bit()
+        public async Task TestGetNgrokDownloadUrl32BitAsync()
         {
             var installer = new NgrokInstaller(_mockHttpClient, false);
-            var url = await installer.GetNgrokDownloadUrl();
+            var url = await installer.GetNgrokDownloadUrlAsync();
             Assert.AreEqual("https://fakedomain.io/ngrok32.zip", url);
         }
 
         [TestMethod]
         [ExpectedException(typeof(NgrokDownloadException))]
-        public async Task TestGetNgrokDownloadUrlHttpError()
+        public async Task TestGetNgrokDownloadUrlHttpErrorAsync()
         {
             _mockHttpMessageHandler = new MockHttpMessageHandler();
             _mockHttpMessageHandler.When("https://ngrok.com/download")
                 .Respond(x => new HttpResponseMessage(HttpStatusCode.NotFound));
             var installer = new NgrokInstaller(_mockHttpMessageHandler.ToHttpClient(), false);
-            await installer.GetNgrokDownloadUrl();
+            await installer.GetNgrokDownloadUrlAsync();
         }
 
         [TestMethod]
         [ExpectedException(typeof(NgrokDownloadException))]
-        public async Task TestGetNgrokDownloadUrlTextNotFound()
+        public async Task TestGetNgrokDownloadUrlTextNotFoundAsync()
         {
             _mockHttpMessageHandler = new MockHttpMessageHandler();
             _mockHttpMessageHandler.When("https://ngrok.com/download")
                 .Respond("text/html", "<h1>some html without expected download links</h1>");
             var installer = new NgrokInstaller(_mockHttpMessageHandler.ToHttpClient(), false);
-            await installer.GetNgrokDownloadUrl();
+            await installer.GetNgrokDownloadUrlAsync();
         }
 
         [TestMethod]
-        public async Task TestDownloadNgrok()
+        public async Task TestDownloadNgrokAsync()
         {
             var installer = new NgrokInstaller(_mockHttpClient, true);
-            var stream = await installer.DownloadNgrok();
+            var stream = await installer.DownloadNgrokAsync();
             var buffer = new byte[SampleZip.Length];
             await stream.ReadAsync(buffer, 0, SampleZip.Length);
             Assert.IsTrue(buffer.SequenceEqual(SampleZip));
@@ -78,21 +78,21 @@ namespace NgrokExtensions.Test
 
         [TestMethod]
         [ExpectedException(typeof(NgrokDownloadException))]
-        public async Task TestDownloadNgrokFailed()
+        public async Task TestDownloadNgrokFailedAsync()
         {
             _mockHttpMessageHandler = new MockHttpMessageHandler();
             _mockHttpMessageHandler.When("https://fakedomain.io/ngrok.zip")
                 .Respond(x => new HttpResponseMessage(HttpStatusCode.NotFound));
             var installer = new NgrokInstaller(_mockHttpMessageHandler.ToHttpClient(), false);
 
-            await installer.DownloadNgrok("https://fakedomain.io/ngrok.zip");
+            await installer.DownloadNgrokAsync("https://fakedomain.io/ngrok.zip");
         }
 
         [TestMethod]
-        public async Task TestInstallNgrok()
+        public async Task TestInstallNgrokAsync()
         {
             var installer = new NgrokInstaller(_mockHttpClient, true);
-            var path = await installer.InstallNgrok();
+            var path = await installer.InstallNgrokAsync();
             Assert.IsTrue(Regex.IsMatch(path, @"^.*\\ngrok\.exe$"));
             Assert.IsTrue(File.Exists(path));
             File.Delete(path);

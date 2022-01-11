@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>386561ba-7f3a-4682-9288-d2efe29daaea</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NgrokExtensions.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)NgrokErrorApiResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NgrokInstaller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NgrokProcess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NgrokTunnelApiRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NgrokTunnelsApiResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NgrokUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OptionsPageGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)StartTunnel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StartTunnelPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebAppConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\PreviewImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\StartTunnel.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\tunnel.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Key.snk" />
+    <None Include="$(MSBuildThisFileDirectory)StartTunnelPackage.vsct" />
+  </ItemGroup>
+</Project>
