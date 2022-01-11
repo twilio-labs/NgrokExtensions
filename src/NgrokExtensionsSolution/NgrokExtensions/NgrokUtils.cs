@@ -12,13 +12,14 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace NgrokExtensions
 {
     public class NgrokUtils
     {
         public const string NgrokNotFoundMessage = "ngrok executable not found. Configure the path in the via the add-in options or add the location to your PATH.";
-        private static Version MinimumVersion = new Version("2.3.34");
+        private static readonly Version MinimumVersion = new Version("2.3.34");
         private readonly Dictionary<string, WebAppConfig> _webApps;
         private readonly Func<string, Task> _showErrorFunc;
         private readonly HttpClient _ngrokApi;

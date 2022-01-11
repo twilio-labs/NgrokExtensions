@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32107.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgrokExtensions", "NgrokExtensions\NgrokExtensions.csproj", "{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgrokExtensions.Test", "NgrokExtensions.Test\NgrokExtensions.Test.csproj", "{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC710559-C985-4B83-A055-A378995E0090}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\build.yaml = ..\..\.github\workflows\build.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E9B3FD1-C941-4F42-A5A9-91CEBB038589}
 	EndGlobalSection
 EndGlobal
