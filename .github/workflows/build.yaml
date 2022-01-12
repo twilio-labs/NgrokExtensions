@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - multiversion
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
@@ -19,6 +20,7 @@ on:
   workflow_dispatch:
     branches:
       - master
+      - multiversion
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
