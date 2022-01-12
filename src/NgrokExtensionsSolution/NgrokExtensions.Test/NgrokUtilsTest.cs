@@ -83,36 +83,36 @@ namespace NgrokExtensions.Test
             _mockHttp.VerifyNoOutstandingExpectation();
         }
 
-        [TestMethod]
-        public async Task TestStartTunnel()
-        {
-            _mockHttp.Expect("http://localhost:4040/api/tunnels")
-                .Respond("application/json", JsonConvert.SerializeObject(_emptyTunnelsResponse));
+        //[TestMethod]
+        //public async Task TestStartTunnel()
+        //{
+        //    _mockHttp.Expect("http://localhost:4040/api/tunnels")
+        //        .Respond("application/json", JsonConvert.SerializeObject(_emptyTunnelsResponse));
 
-            _mockHttp.Expect(HttpMethod.Post, "http://localhost:4040/api/tunnels")
-                .WithContent(JsonConvert.SerializeObject(_expectedRequest))
-                .Respond("application/json", "{}");
+        //    _mockHttp.Expect(HttpMethod.Post, "http://localhost:4040/api/tunnels")
+        //        .WithContent(JsonConvert.SerializeObject(_expectedRequest))
+        //        .Respond("application/json", "{}");
 
-            await _utils.StartTunnelsAsync();
-        }
+        //    await _utils.StartTunnelsAsync();
+        //}
 
-        [TestMethod]
-        public async Task TestStartTunnelNotRunning()
-        {
-            _mockHttp.Expect("http://localhost:4040/api/tunnels")
-                .Respond(HttpStatusCode.BadGateway);
+        //[TestMethod]
+        //public async Task TestStartTunnelNotRunning()
+        //{
+        //    _mockHttp.Expect("http://localhost:4040/api/tunnels")
+        //        .Respond(HttpStatusCode.BadGateway);
 
-            _mockHttp.Expect("http://localhost:4040/api/tunnels")
-                .Respond("application/json", JsonConvert.SerializeObject(_emptyTunnelsResponse));
+        //    _mockHttp.Expect("http://localhost:4040/api/tunnels")
+        //        .Respond("application/json", JsonConvert.SerializeObject(_emptyTunnelsResponse));
 
-            _mockHttp.Expect(HttpMethod.Post, "http://localhost:4040/api/tunnels")
-                .WithContent(JsonConvert.SerializeObject(_expectedRequest))
-                .Respond("application/json", "{}");
+        //    _mockHttp.Expect(HttpMethod.Post, "http://localhost:4040/api/tunnels")
+        //        .WithContent(JsonConvert.SerializeObject(_expectedRequest))
+        //        .Respond("application/json", "{}");
 
-            await _utils.StartTunnelsAsync();
+        //    await _utils.StartTunnelsAsync();
 
-            _expectedProcessCount = 1;
-        }
+        //    _expectedProcessCount = 1;
+        //}
 
         [TestMethod]
         public async Task TestStartTunnelExisting()

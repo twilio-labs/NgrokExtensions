@@ -37,6 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+	  <Reference Include="System.Configuration" />
+	  <Reference Include="System.Net.Http" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -59,12 +61,6 @@
     <Compile Include="WebAppConfigTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NgrokExtensions\NgrokExtensions.2019.csproj">
-      <Project>{8fcaf75b-bcdf-415b-aae2-ecebaf53dcd1}</Project>
-      <Name>NgrokExtensions.2019</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Castle.Core">
       <Version>4.4.1</Version>
     </PackageReference>
@@ -80,6 +76,18 @@
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>
     </PackageReference>
+	  <PackageReference Include="System.Threading.Tasks.Extensions">
+		  <Version>4.5.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+		  <Version>6.0.0</Version>
+	  </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NgrokExtensions\NgrokExtensions.2019.csproj">
+      <Project>{8fcaf75b-bcdf-415b-aae2-ecebaf53dcd1}</Project>
+      <Name>NgrokExtensions.2019</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
