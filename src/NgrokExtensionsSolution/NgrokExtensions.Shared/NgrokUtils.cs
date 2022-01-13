@@ -94,20 +94,20 @@ namespace NgrokExtensions
 
         private async Task StartNgrokAsync(bool retry = false)
         {
-            if (await CanGetTunnelList()) return;
+            if (await CanGetTunnelListAsync()) return;
 
             _ngrokProcess.StartNgrokProcess();
             await Task.Delay(250);
 
-            if (await CanGetTunnelList(retry:true)) return;
+            if (await CanGetTunnelListAsync(retry:true)) return;
             await _showErrorFunc("Cannot start ngrok. Is it installed and in your PATH?");
         }
 
-        private async Task<bool> CanGetTunnelList(bool retry = false)
+        private async Task<bool> CanGetTunnelListAsync(bool retry = false)
         {
             try
             {
-                await GetTunnelList();
+                await GetTunnelListAsync();
             }
             catch
             {
@@ -116,7 +116,7 @@ namespace NgrokExtensions
             return (_tunnels != null);
         }
 
-        private async Task GetTunnelList()
+        private async Task GetTunnelListAsync()
         {
             var response = await _ngrokApi.GetAsync("/api/tunnels");
             if (response.IsSuccessStatusCode)

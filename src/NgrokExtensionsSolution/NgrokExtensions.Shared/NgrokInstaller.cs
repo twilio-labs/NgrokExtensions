@@ -32,7 +32,7 @@ namespace NgrokExtensions
             _is64Bit = is64Bit;
         }
 
-        public async Task<string> GetNgrokDownloadUrl()
+        public async Task<string> GetNgrokDownloadUrlAsync()
         {
             var response = await _httpClient.GetAsync("https://ngrok.com/download");
 
@@ -57,11 +57,11 @@ namespace NgrokExtensions
             return match.Groups[1].Value.Replace("&amp;", "&");
         }
 
-        public async Task<Stream> DownloadNgrok(string url = null)
+        public async Task<Stream> DownloadNgrokAsync(string url = null)
         {
             if (string.IsNullOrEmpty(url))
             {
-                url = await GetNgrokDownloadUrl();
+                url = await GetNgrokDownloadUrlAsync();
             }
 
             var response = await _httpClient.GetAsync(url);
@@ -74,9 +74,9 @@ namespace NgrokExtensions
             return await response.Content.ReadAsStreamAsync();
         }
 
-        public async Task<string> InstallNgrok()
+        public async Task<string> InstallNgrokAsync()
         {
-            var zip = new ZipArchive(await DownloadNgrok(), ZipArchiveMode.Read);
+            var zip = new ZipArchive(await DownloadNgrokAsync(), ZipArchiveMode.Read);
             var exeEntry = zip.GetEntry("ngrok.exe");
             using (var exeData = exeEntry.Open())
             {

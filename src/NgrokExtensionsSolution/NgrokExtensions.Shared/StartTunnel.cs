@@ -88,6 +88,7 @@ namespace NgrokExtensions
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var webApps = GetWebApps();
 
             if (webApps.Count == 0)
@@ -121,7 +122,7 @@ namespace NgrokExtensions
                     try
                     {
                         var installer = new NgrokInstaller();
-                        page.ExecutablePath = await installer.InstallNgrok();
+                        page.ExecutablePath = await installer.InstallNgrokAsync();
                         ngrok = new NgrokUtils(webApps, page.ExecutablePath, ShowErrorMessageAsync);
                     }
                     catch (NgrokDownloadException ngrokDownloadException)
@@ -166,6 +167,7 @@ namespace NgrokExtensions
 
         private Dictionary<string, WebAppConfig> GetWebApps()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var webApps = new Dictionary<string, WebAppConfig>();
             var projects = GetSolutionProjects();
             if (projects == null) return webApps;
@@ -222,6 +224,7 @@ namespace NgrokExtensions
 
         private static void LoadOptionsFromWebConfig(Project project, WebAppConfig webApp)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             foreach (ProjectItem item in project.ProjectItems)
             {
                 if (item.Name.ToLower() != "web.config") continue;
@@ -238,6 +241,7 @@ namespace NgrokExtensions
 
         private static void LoadOptionsFromAppSettingsJson(Project project, WebAppConfig webApp)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             // Read the settings from the project's appsettings.json first
             foreach (ProjectItem item in project.ProjectItems)
             {
@@ -274,6 +278,7 @@ namespace NgrokExtensions
 
         private static void DebugWriteProp(Property prop)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             try
             {
                 Debug.WriteLine($"{prop.Name} = {prop.Value}");
@@ -286,12 +291,14 @@ namespace NgrokExtensions
 
         private IEnumerable<Project> GetSolutionProjects()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var solution = (ServiceProvider.GetService(typeof(SDTE)) as DTE)?.Solution;
             return solution == null ? null : ProcessProjects(solution.Projects.Cast<Project>());
         }
 
         private static IEnumerable<Project> ProcessProjects(IEnumerable<Project> projects)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var newProjectsList = new List<Project>();
             foreach (var p in projects)
             {
@@ -311,6 +318,7 @@ namespace NgrokExtensions
 
         private static IEnumerable<Project> GetSolutionFolderProjects(Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return project.ProjectItems.Cast<ProjectItem>()
                 .Select(item => item.SubProject)
                 .Where(subProject => subProject != null)

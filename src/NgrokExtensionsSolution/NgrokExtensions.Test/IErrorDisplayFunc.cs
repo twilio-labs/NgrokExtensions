@@ -4,6 +4,6 @@ namespace NgrokExtensions.Test
 {
     public interface IErrorDisplayFunc
     {
-        Task ShowError(string msg);
+        Task ShowErrorAsync(string msg);
     }
 }
