@@ -17,6 +17,8 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,7 +70,7 @@
       <Version>4.16.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>8.0.3</Version>
+      <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="RichardSzalay.MockHttp">
       <Version>6.0.0</Version>
@@ -88,11 +90,6 @@
       <Project>{8fcaf75b-bcdf-415b-aae2-ecebaf53dcd1}</Project>
       <Name>NgrokExtensions.2019</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
