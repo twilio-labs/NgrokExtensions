@@ -1,28 +1,61 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32107.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgrokExtensions", "NgrokExtensions\NgrokExtensions.csproj", "{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgrokExtensions.2019", "NgrokExtensions\NgrokExtensions.2019.csproj", "{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgrokExtensions.Test", "NgrokExtensions.Test\NgrokExtensions.Test.csproj", "{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NgrokExtensions.Shared", "NgrokExtensions.Shared\NgrokExtensions.Shared.shproj", "{386561BA-7F3A-4682-9288-D2EFE29DAAEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NgrokExtensions.2022", "NgrokExtensions.2022\NgrokExtensions.2022.csproj", "{BF64FAC8-EF65-43EE-8229-21565F95FD68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE711E8B-0A6D-4446-8DE2-0D63911791EA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\build.yaml = ..\..\.github\workflows\build.yaml
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		NgrokExtensions.Shared\NgrokExtensions.Shared.projitems*{386561ba-7f3a-4682-9288-d2efe29daaea}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Debug|x86.ActiveCfg = Debug|x86
+		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Debug|x86.Build.0 = Debug|x86
 		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Release|x86.ActiveCfg = Release|x86
+		{8FCAF75B-BCDF-415B-AAE2-ECEBAF53DCD1}.Release|x86.Build.0 = Release|x86
 		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Debug|x86.Build.0 = Debug|Any CPU
 		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Release|x86.ActiveCfg = Release|Any CPU
+		{A409F2F2-6E3A-45DD-8C7E-8DD8569E9023}.Release|x86.Build.0 = Release|Any CPU
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Debug|x86.ActiveCfg = Debug|x86
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Debug|x86.Build.0 = Debug|x86
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Release|x86.ActiveCfg = Release|x86
+		{BF64FAC8-EF65-43EE-8229-21565F95FD68}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F9FB4B6-B2C6-4885-8E50-C400F8477080}
 	EndGlobalSection
 EndGlobal

@@ -44,7 +44,7 @@ namespace NgrokExtensions.Test
             };
 
             _mockErrorDisplay = new Mock<IErrorDisplayFunc>();
-            _mockErrorDisplay.Setup(x => x.ShowError(It.IsAny<string>()))
+            _mockErrorDisplay.Setup(x => x.ShowErrorAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(0))
                 .Verifiable("Error display not called.");
 
@@ -69,7 +69,7 @@ namespace NgrokExtensions.Test
         private void InitializeUtils(string stdout)
         {
             _ngrokProcess = new FakeNgrokProcess(_tempFile, stdout);
-            _utils = new NgrokUtils(_webApps, _tempFile, _mockErrorDisplay.Object.ShowError, _client, _ngrokProcess);
+            _utils = new NgrokUtils(_webApps, _tempFile, _mockErrorDisplay.Object.ShowErrorAsync, _client, _ngrokProcess);
         }
 
         [TestCleanup]
@@ -84,7 +84,7 @@ namespace NgrokExtensions.Test
         }
 
         [TestMethod]
-        public async Task TestStartTunnel()
+        public async Task TestStartTunnelAsync()
         {
             _mockHttp.Expect("http://localhost:4040/api/tunnels")
                 .Respond("application/json", JsonConvert.SerializeObject(_emptyTunnelsResponse));
@@ -97,7 +97,7 @@ namespace NgrokExtensions.Test
         }
 
         [TestMethod]
-        public async Task TestStartTunnelNotRunning()
+        public async Task TestStartTunnelNotRunningAsync()
         {
             _mockHttp.Expect("http://localhost:4040/api/tunnels")
                 .Respond(HttpStatusCode.BadGateway);
@@ -115,11 +115,11 @@ namespace NgrokExtensions.Test
         }
 
         [TestMethod]
-        public async Task TestStartTunnelExisting()
+        public async Task TestStartTunnelExistingAsync()
         {
             var tunnels = new NgrokTunnelsApiResponse
             {
-                tunnels = new []
+                tunnels = new[]
                 {
                     new Tunnel
                     {
