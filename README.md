@@ -2,10 +2,6 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/mi2kn7oaluldhuyo/branch/master?svg=true)](https://ci.appveyor.com/project/dprothero/ngrokextensions/branch/master)
 
-## Looking for new owner
-
-### 📣 This project is looking for a new owner. Please contact me if you are interested. 📣
-
 ## Description
 
 This extension allows you to use [ngrok](https://ngrok.com) right from within Visual Studio.
@@ -90,6 +86,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
+* v0.9.14 - Add support for Visual Studio 2022.
 * v0.9.13 - Add support for https.
 * v0.9.12 - Add support for Visual Studio 2019.
 * v0.9.11 - Fix ngrok installer after ngrok download page changed.
