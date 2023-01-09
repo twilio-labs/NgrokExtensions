@@ -13,7 +13,7 @@ Has been tested in Visual Studio 2015, 2017, 2019, and 2022.
 
 ### From Visual Studio
 
-Get it from the [Visual Studio Gallery](https://visualstudiogallery.msdn.microsoft.com/56a642ed-a5e0-4044-8735-740d36912c5e).
+Get it from the [Visual Studio Gallery for VS 2022](https://marketplace.visualstudio.com/items?itemName=DavidProthero.ngrokextensions-2022) or for [VS 2019 and earlier](https://marketplace.visualstudio.com/items?itemName=DavidProthero.NgrokExtensions).
 From within Visual Studio:
 
 1. Select Tools... Extensions and Updates...
