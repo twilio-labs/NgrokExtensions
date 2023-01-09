@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NgrokExtensions.Test")]
-[assembly: AssemblyCopyright("Copyright 2018 David Prothero (MIT License)")]
+[assembly: AssemblyCopyright("Copyright 2023 David Prothero (MIT License)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

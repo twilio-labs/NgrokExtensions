@@ -78,7 +78,7 @@ This is a brand new extension and would benefit greatly from your feedback
 and even your code contribution.
 
 If you find a bug or would like to request a feature,
-[open an issue](https://github.com/dprothero/NgrokExtensions/issues).
+[open an issue](https://github.com/twilio-labs/NgrokExtensions/issues).
 
 To contribute, fork this repo to your own GitHub account. Then, create a
 branch on your own fork and perform the work. Push it up to your fork and
@@ -86,7 +86,7 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 ## Change Log
 
-* v0.9.14 - Add support for Visual Studio 2022.
+* v0.9.14 - Add support for Visual Studio 2023.
 * v0.9.13 - Add support for https.
 * v0.9.12 - Add support for Visual Studio 2019.
 * v0.9.11 - Fix ngrok installer after ngrok download page changed.
@@ -105,4 +105,4 @@ then submit a Pull Request to this repo. This is called [GitHub Flow](https://gu
 
 Licensed under the MIT license. See the LICENSE file in the project root for more information.
 
-Copyright (c) 2019 David Prothero
+Copyright (c) 2023 David Prothero

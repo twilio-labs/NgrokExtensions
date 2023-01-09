@@ -4,11 +4,11 @@
         <Identity Id="NgrokExtensions.David Prothero.1af4dbfe-1c37-44bd-b491-5acee6064583" Version="0.9.14" Language="en-US" Publisher="David Prothero" />
         <DisplayName>Ngrok Extensions</DisplayName>
         <Description xml:space="preserve">Use ngrok quickly and easily from within Visual Studio. ngrok allows you to expose a local server behind a NAT or firewall to the internet. "Demo without deploying."</Description>
-        <MoreInfo>https://github.com/dprothero/NgrokExtensions</MoreInfo>
+        <MoreInfo>https://github.com/twilio-labs/NgrokExtensions</MoreInfo>
         <License>LICENSE</License>
         <Icon>Resources\tunnel.ico</Icon>
         <PreviewImage>Resources\PreviewImage.png</PreviewImage>
-        <Tags>Visual Studio, Extension, Web</Tags>
+        <Tags>Visual Studio, Extension, Web, ngrok, tunnel</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0, 17.0)" />
