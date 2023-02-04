@@ -27,10 +27,14 @@ namespace NgrokExtensions
             return match.Success ? match.Value : null;
         }
 
-        public void StartNgrokProcess(string args = "start --none", bool showWindow = true)
+        public void StartNgrokProcess(string args = "start --none", bool showWindow = true, string region = "")
         {
             var path = GetNgrokPath();
 
+            if (!string.IsNullOrWhiteSpace(region))
+            {
+                args += $" --region={region}";
+            }
             var pi = new ProcessStartInfo(path, args)
             {
                 CreateNoWindow = !showWindow,

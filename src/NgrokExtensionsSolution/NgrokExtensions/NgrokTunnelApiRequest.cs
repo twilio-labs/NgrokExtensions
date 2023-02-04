@@ -7,5 +7,6 @@
         public string proto { get; set; }
         public string subdomain { get; set; }
         public string host_header { get; set; }
+        public string hostname { get; set; }
     }
 }
